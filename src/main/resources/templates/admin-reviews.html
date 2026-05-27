@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reviews — Admin | Asra Optical Palace</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#c9a96e;--dark:#1a1a1a;--cream:#f9f6f0;--border:#e0d5c5;--mid:#4a4a4a;--sb:240px}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sb{width:var(--sb);background:var(--dark);position:fixed;top:0;left:0;height:100vh;
+  display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.sb-logo{padding:24px 20px;border-bottom:1px solid #2d2d2d;text-align:center}
+.sb-brand{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);letter-spacing:1.5px}
+.sb-role{font-size:10px;color:#555;letter-spacing:2px;margin-top:3px}
+.sb-nav{flex:1;padding:18px 0}
+.sb-sec{padding:10px 20px 4px;font-size:10px;letter-spacing:2px;color:#444;text-transform:uppercase}
+.sb-link{display:flex;align-items:center;gap:11px;padding:11px 20px;color:#888;
+  text-decoration:none;font-size:13px;transition:all .2s;border-left:3px solid transparent}
+.sb-link:hover{color:white;background:#242424}
+.sb-link.active{color:var(--gold);background:#1e1e1e;border-left-color:var(--gold)}
+.sb-foot{padding:18px 20px;border-top:1px solid #2d2d2d}
+.sb-foot a{display:block;color:#666;text-decoration:none;font-size:13px;padding:6px 0}
+.sb-foot a:hover{color:var(--gold)}
+
+/* ── MAIN ── */
+.main{margin-left:var(--sb);flex:1}
+.topbar{background:white;padding:0 35px;height:64px;display:flex;align-items:center;
+  justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.topbar h1{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400}
+.content{padding:25px 35px}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.stat{background:white;border:1px solid var(--border);border-radius:4px;
+  padding:16px 18px;text-align:center;border-top:3px solid transparent}
+.stat.gold{border-top-color:var(--gold)}
+.stat.green{border-top-color:#27ae60}
+.stat.red{border-top-color:#e74c3c}
+.stat.blue{border-top-color:#3498db}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--dark)}
+.stat-label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--mid);margin-top:4px}
+
+/* ── FILTER BAR ── */
+.filter-bar{background:white;border:1px solid var(--border);border-radius:4px;
+  padding:12px 18px;margin-bottom:18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.filter-bar label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--mid);font-weight:600}
+.fpill{padding:5px 16px;border:1px solid var(--border);border-radius:20px;font-size:12px;
+  cursor:pointer;background:white;color:var(--mid);transition:.2s;letter-spacing:.5px}
+.fpill:hover,.fpill.on{background:var(--dark);color:var(--gold);border-color:var(--dark)}
+.search-input{padding:8px 13px;border:1px solid var(--border);border-radius:3px;
+  font-size:13px;font-family:'DM Sans',sans-serif;outline:none;flex:1;max-width:280px}
+.search-input:focus{border-color:var(--gold)}
+
+/* ── REVIEW CARDS ── */
+.reviews-grid{display:flex;flex-direction:column;gap:14px}
+.review-card{background:white;border:1px solid var(--border);border-radius:4px;
+  overflow:hidden;transition:.2s}
+.review-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.review-card.hidden-review{border-left:4px solid #e74c3c;opacity:.7}
+.review-card.approved-review{border-left:4px solid #27ae60}
+
+.rc-header{padding:16px 20px;display:flex;align-items:flex-start;justify-content:space-between;
+  gap:14px;border-bottom:1px solid var(--border)}
+.rc-left{display:flex;align-items:flex-start;gap:14px;flex:1}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--dark);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);
+  flex-shrink:0;font-weight:600}
+.rc-meta h4{font-size:15px;font-weight:600;color:var(--dark);margin-bottom:3px}
+.rc-meta .email{font-size:12px;color:#aaa}
+.rc-meta .date{font-size:11px;color:#bbb;margin-top:2px}
+
+/* Stars */
+.stars{display:flex;gap:2px;margin:4px 0}
+.star{font-size:16px;color:#ddd}
+.star.on{color:#f39c12}
+
+/* Product tag */
+.product-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;
+  background:var(--cream);border:1px solid var(--border);border-radius:20px;
+  font-size:11px;color:var(--mid);text-decoration:none;margin-top:4px;transition:.2s}
+.product-tag:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Rating badge */
+.rating-badge{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:2px}
+.rating-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1}
+.rating-num.r5{color:#27ae60}
+.rating-num.r4{color:#2ecc71}
+.rating-num.r3{color:#f39c12}
+.rating-num.r2{color:#e67e22}
+.rating-num.r1{color:#e74c3c}
+.rating-label{font-size:10px;color:#bbb;letter-spacing:.5px}
+
+/* Comment */
+.rc-body{padding:14px 20px}
+.comment-text{font-size:14px;color:var(--mid);line-height:1.7;font-style:italic}
+.comment-text::before{content:'"';color:var(--gold);font-size:24px;font-family:'Cormorant Garamond',serif;line-height:0;vertical-align:-8px;margin-right:3px}
+.comment-text::after{content:'"';color:var(--gold);font-size:24px;font-family:'Cormorant Garamond',serif;line-height:0;vertical-align:-8px;margin-left:3px}
+
+/* Actions */
+.rc-footer{padding:12px 20px;background:#fafaf8;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:10px}
+.status-pill{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.5px}
+.status-pill.approved{background:#d4edda;color:#155724}
+.status-pill.hidden{background:#f8d7da;color:#721c24}
+.actions{display:flex;gap:8px}
+.act-btn{padding:7px 16px;border:none;border-radius:3px;cursor:pointer;
+  font-size:12px;font-weight:600;letter-spacing:.5px;transition:.2s;font-family:'DM Sans',sans-serif}
+.approve-btn{background:#d4edda;color:#155724}
+.approve-btn:hover{background:#27ae60;color:white}
+.hide-btn{background:#fff3cd;color:#856404}
+.hide-btn:hover{background:#f39c12;color:white}
+.delete-btn{background:#f8d7da;color:#721c24}
+.delete-btn:hover{background:#e74c3c;color:white}
+
+/* Empty */
+.empty{text-align:center;padding:80px 30px;color:#bbb}
+.empty .icon{font-size:56px;margin-bottom:16px}
+.empty p{font-size:15px}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sb">
+  <div class="sb-logo"><div class="sb-brand">ASRA OPTICAL</div><div class="sb-role">ADMIN PANEL</div></div>
+  <nav class="sb-nav">
+    <div class="sb-sec">Main</div>
+    <a href="/admin/dashboard" class="sb-link">📊 Dashboard</a>
+    <div class="sb-sec">Products</div>
+    <a href="/admin/add-product" class="sb-link">➕ Add Product</a>
+    <a href="/admin/products" class="sb-link">📦 All Products</a>
+    <div class="sb-sec">Marketing</div>
+    <a href="/admin/offers" class="sb-link">🔥 Offers</a>
+    <a href="/admin/coupons" class="sb-link">🏷️ Coupons</a>
+    <div class="sb-sec">Operations</div>
+    <a href="/admin/orders" class="sb-link">🛒 Orders</a>
+    <a href="/admin/appointments" class="sb-link">📅 Appointments</a>
+    <a href="/admin/reviews" class="sb-link active">⭐ Reviews</a>
+    <div class="sb-sec">Account</div>
+    <a href="/profile" class="sb-link">👤 Profile & Password</a>
+  </nav>
+  <div class="sb-foot">
+    <a href="/" target="_blank">🌐 View Store</a>
+    <form action="/logout" method="post" style="margin:0">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+      <button style="background:none;border:none;cursor:pointer;color:#666;font-size:13px;
+        padding:6px 0;font-family:'DM Sans',sans-serif;width:100%;text-align:left">🚪 Logout</button>
+    </form>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main">
+  <div class="topbar">
+    <h1>Customer Reviews</h1>
+    <span style="font-size:13px;color:var(--mid)"
+          th:text="${#lists.size(reviews)} + ' total reviews'"></span>
+  </div>
+
+  <div class="content">
+
+    <!-- ── STATS (counts computed by JS from rendered cards) ── -->
+    <div class="stats">
+      <div class="stat gold">
+        <div class="stat-num" th:text="${#lists.size(reviews)}">0</div>
+        <div class="stat-label">Total Reviews</div>
+      </div>
+      <div class="stat green">
+        <div class="stat-num" id="cnt-published">0</div>
+        <div class="stat-label">Published</div>
+      </div>
+      <div class="stat red">
+        <div class="stat-num" id="cnt-hidden">0</div>
+        <div class="stat-label">Hidden</div>
+      </div>
+      <div class="stat blue">
+        <div class="stat-num" id="cnt-avg">0.0</div>
+        <div class="stat-label">Avg Rating ⭐</div>
+      </div>
+    </div>
+
+    <!-- ── FILTER BAR ── -->
+    <div class="filter-bar">
+      <label>Filter:</label>
+      <span class="fpill on" onclick="filterReviews('all', this)">All</span>
+      <span class="fpill" onclick="filterReviews('approved', this)">✅ Published</span>
+      <span class="fpill" onclick="filterReviews('hidden', this)">🙈 Hidden</span>
+      <span class="fpill" onclick="filterReviews('5', this)">⭐⭐⭐⭐⭐ 5 Star</span>
+      <span class="fpill" onclick="filterReviews('4', this)">⭐⭐⭐⭐ 4 Star</span>
+      <span class="fpill" onclick="filterReviews('3', this)">⭐⭐⭐ 3 Star</span>
+      <span class="fpill" onclick="filterReviews('low', this)">⚠️ 1-2 Star</span>
+      <input type="text" class="search-input" placeholder="Search by name, email, product…"
+             oninput="searchReviews(this.value)">
+    </div>
+
+    <!-- ── REVIEW CARDS ── -->
+    <div class="reviews-grid" id="reviewGrid">
+
+      <div th:each="review : ${reviews}"
+           class="review-card"
+           th:classappend="${review.approved} ? 'approved-review' : 'hidden-review'"
+           th:data-approved="${review.approved}"
+           th:data-rating="${review.rating}"
+           th:data-search="${(review.customerName != null ? review.customerName : '') + ' ' +
+                             (review.email != null ? review.email : '') + ' ' +
+                             (review.product != null ? review.product.name : '')}">
+
+        <!-- Header -->
+        <div class="rc-header">
+          <div class="rc-left">
+            <!-- Avatar with initials -->
+            <div class="avatar"
+                 th:text="${review.customerName != null and review.customerName.length() > 0
+                           ? review.customerName.substring(0,1).toUpperCase() : '?'}">?</div>
+            <div class="rc-meta">
+              <h4 th:text="${review.customerName != null ? review.customerName : 'Anonymous'}"></h4>
+              <div class="email" th:text="${review.email}"></div>
+              <!-- Stars -->
+              <div class="stars">
+                <span class="star" th:classappend="${review.rating >= 1} ? 'on'">★</span>
+                <span class="star" th:classappend="${review.rating >= 2} ? 'on'">★</span>
+                <span class="star" th:classappend="${review.rating >= 3} ? 'on'">★</span>
+                <span class="star" th:classappend="${review.rating >= 4} ? 'on'">★</span>
+                <span class="star" th:classappend="${review.rating >= 5} ? 'on'">★</span>
+              </div>
+              <!-- Product link -->
+              <a th:if="${review.product != null}"
+                 th:href="@{'/product/' + ${review.product.id}}"
+                 target="_blank" class="product-tag">
+                👓 <span th:text="${review.product.name}"></span>
+              </a>
+              <div class="date"
+                   th:text="${#dates.format(review.createdAt, 'dd MMM yyyy · HH:mm')}"></div>
+            </div>
+          </div>
+
+          <!-- Rating badge -->
+          <div class="rating-badge">
+            <div class="rating-num"
+                 th:classappend="'r' + ${review.rating}"
+                 th:text="${review.rating}"></div>
+            <div class="rating-label">/ 5</div>
+          </div>
+        </div>
+
+        <!-- Comment body -->
+        <div class="rc-body" th:if="${review.comment != null and !review.comment.isEmpty()}">
+          <div class="comment-text" th:text="${review.comment}"></div>
+        </div>
+        <div class="rc-body" th:if="${review.comment == null or review.comment.isEmpty()}">
+          <div style="color:#bbb;font-size:13px;font-style:italic">No comment left.</div>
+        </div>
+
+        <!-- Footer actions -->
+        <div class="rc-footer">
+          <span class="status-pill"
+                th:classappend="${review.approved} ? 'approved' : 'hidden'"
+                th:text="${review.approved} ? '✅ Published on product page' : '🙈 Hidden from customers'">
+          </span>
+          <div class="actions">
+            <!-- Toggle approve/hide -->
+            <form th:action="@{'/admin/reviews/toggle/' + ${review.id}}" method="post" style="margin:0">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+              <button type="submit"
+                      th:class="${review.approved} ? 'act-btn hide-btn' : 'act-btn approve-btn'"
+                      th:text="${review.approved} ? '🙈 Hide' : '✅ Publish'">
+              </button>
+            </form>
+            <!-- Delete -->
+            <form th:action="@{'/admin/reviews/delete/' + ${review.id}}" method="post" style="margin:0"
+                  onsubmit="return confirm('Permanently delete this review?')">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+              <button type="submit" class="act-btn delete-btn">🗑 Delete</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty" th:if="${#lists.isEmpty(reviews)}">
+        <div class="icon">⭐</div>
+        <p>No reviews yet. They'll appear here when customers review products.</p>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+let currentFilter = 'all';
+
+// Compute stats from rendered cards on load
+document.addEventListener('DOMContentLoaded', function() {
+  const cards = document.querySelectorAll('.review-card');
+  let published = 0, hidden = 0, ratingSum = 0, count = 0;
+  cards.forEach(c => {
+    if (c.dataset.approved === 'true') published++; else hidden++;
+    const r = parseInt(c.dataset.rating || 0);
+    if (r > 0) { ratingSum += r; count++; }
+  });
+  document.getElementById('cnt-published').textContent = published;
+  document.getElementById('cnt-hidden').textContent = hidden;
+  document.getElementById('cnt-avg').textContent = count > 0 ? (ratingSum / count).toFixed(1) : '0.0';
+});
+
+function filterReviews(type, el) {
+  currentFilter = type;
+  document.querySelectorAll('.fpill').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+  applyFilters();
+}
+
+function searchReviews(q) { applyFilters(q); }
+
+function applyFilters(q) {
+  const query = (q !== undefined ? q : document.querySelector('.search-input').value).toLowerCase();
+  document.querySelectorAll('.review-card').forEach(card => {
+    const approved = card.dataset.approved === 'true';
+    const rating = parseInt(card.dataset.rating);
+    const searchText = (card.dataset.search || '').toLowerCase();
+    let show = true;
+    if (currentFilter === 'approved') show = approved;
+    else if (currentFilter === 'hidden') show = !approved;
+    else if (currentFilter === '5') show = rating === 5;
+    else if (currentFilter === '4') show = rating === 4;
+    else if (currentFilter === '3') show = rating === 3;
+    else if (currentFilter === 'low') show = rating <= 2;
+    if (query && !searchText.includes(query)) show = false;
+    card.style.display = show ? '' : 'none';
+  });
+}
+</script>
+
+</body>
+</html>

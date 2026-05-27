@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Checkout — Asra Optical Palace</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#c9a96e;--dark:#1a1a1a;--cream:#f9f6f0;--border:#e0d5c5;--mid:#4a4a4a}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);min-height:100vh}
+.topbar{background:var(--dark);height:65px;padding:0 50px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:20px;letter-spacing:2px;text-decoration:none}
+.topbar a{color:#aaa;text-decoration:none;font-size:13px}.topbar a:hover{color:var(--gold)}
+.steps{background:white;border-bottom:1px solid var(--border);padding:18px 60px;display:flex;gap:25px;align-items:center}
+.step{display:flex;align-items:center;gap:8px;font-size:13px;color:#bbb}
+.step.active{color:var(--dark);font-weight:500}
+.step .num{width:24px;height:24px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+.step.active .num{background:var(--dark);color:var(--gold)}
+.step-divider{flex:1;height:1px;background:#eee;max-width:40px}
+.container{max-width:1050px;margin:30px auto;padding:0 25px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.form-card{background:white;border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.form-section{padding:22px 26px;border-bottom:1px solid var(--border)}
+.form-section:last-child{border-bottom:none}
+.form-section h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;margin-bottom:16px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.fg{margin-bottom:13px}
+label{display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--mid);margin-bottom:6px;font-weight:500}
+input,select,textarea{width:100%;padding:11px 13px;border:1px solid var(--border);border-radius:3px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s;background:#fdfbf8}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:70px}
+
+/* ── PAYMENT OPTIONS ── */
+.pay-options{display:flex;flex-direction:column;gap:12px}
+.pay-option{border:2px solid var(--border);border-radius:6px;cursor:pointer;transition:all .2s;overflow:hidden}
+.pay-option.selected{border-color:var(--gold)}
+.pay-option-header{display:flex;align-items:center;gap:14px;padding:16px 18px}
+.pay-option-header input[type=radio]{accent-color:var(--dark);width:18px;height:18px;flex-shrink:0}
+.pay-icon{font-size:24px}
+.pay-info .pay-label{font-weight:600;font-size:15px;color:var(--dark)}
+.pay-info .pay-desc{font-size:12px;color:var(--mid);margin-top:3px}
+.pay-badge{margin-left:auto;background:#f0fff4;color:#155724;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
+
+/* ── PAY AT STORE SECTION ── */
+.store-pickup-info{background:var(--dark);border-radius:0 0 4px 4px;padding:20px 18px;display:none}
+.store-pickup-info.show{display:block}
+.booking-code-box{background:var(--gold);color:var(--dark);text-align:center;padding:20px;border-radius:6px;margin:12px 0}
+.booking-code-box .code-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;opacity:.8}
+.booking-code-box .code{font-size:32px;font-weight:700;letter-spacing:6px;font-family:'Cormorant Garamond',serif}
+.store-steps{margin-top:14px}
+.store-step{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;color:#ccc;font-size:13px}
+.store-step .step-num{background:var(--gold);color:var(--dark);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px}
+
+/* ── UPI SECTION ── */
+.upi-section{background:#f9f6f0;border-radius:0 0 4px 4px;padding:18px;display:none;border-top:1px solid var(--border)}
+.upi-section.show{display:block}
+.upi-id-box{background:white;border:2px solid var(--gold);border-radius:4px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin:10px 0}
+.upi-id{font-size:18px;font-weight:700;color:var(--dark);letter-spacing:1px}
+.copy-btn{background:var(--dark);color:var(--gold);border:none;padding:7px 14px;border-radius:3px;cursor:pointer;font-size:12px;font-weight:600}
+
+/* ── COUPON ── */
+.coupon-row{display:flex;gap:8px}
+.coupon-row input{flex:1;text-transform:uppercase}
+.coupon-btn{padding:11px 18px;background:var(--dark);color:var(--gold);border:none;cursor:pointer;font-size:12px;font-weight:600;border-radius:3px;white-space:nowrap}
+.coupon-msg{font-size:13px;margin-top:8px;padding:8px 12px;border-radius:3px;display:none}
+.coupon-ok{background:#f0fff4;color:#155724;border-left:3px solid #27ae60;display:block}
+.coupon-err{background:#fff0f0;color:#c0392b;border-left:3px solid #e74c3c;display:block}
+
+/* ── PRESCRIPTION ── */
+.upload-zone{border:2px dashed var(--border);border-radius:4px;padding:18px;text-align:center;cursor:pointer;transition:.2s;background:#fdfbf8;font-size:13px;color:var(--mid)}
+.upload-zone:hover{border-color:var(--gold)}
+
+/* ── SUMMARY ── */
+.summary{background:white;border:1px solid var(--border);border-radius:4px;padding:26px;position:sticky;top:20px}
+.summary h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.order-item{display:flex;gap:12px;margin-bottom:13px;align-items:center}
+.order-item img{width:55px;height:45px;object-fit:cover;border-radius:3px}
+.order-item .name{font-size:13px;font-weight:500}
+.order-item .qty{font-size:12px;color:var(--mid)}
+.order-item .price{margin-left:auto;font-size:13px;font-weight:600;white-space:nowrap}
+.summary-row{display:flex;justify-content:space-between;font-size:13px;color:var(--mid);margin-bottom:8px}
+.summary-row.discount{color:green}
+.summary-row.total{font-size:18px;font-weight:600;color:var(--dark);padding-top:12px;border-top:1px solid var(--border);margin-top:6px}
+.place-btn{width:100%;padding:15px;background:var(--dark);color:var(--gold);border:none;cursor:pointer;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border-radius:3px;margin-top:16px;transition:.2s}
+.place-btn:hover{background:#2d2d2d}
+.place-btn:disabled{background:#ccc;cursor:not-allowed;color:#888}
+.secure-note{text-align:center;color:#bbb;font-size:11px;margin-top:10px}
+
+@media(max-width:750px){.container{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="/" class="logo">ASRA OPTICAL PALACE</a>
+  <a href="/cart">← Back to Cart</a>
+</nav>
+<div class="steps">
+  <div class="step"><span class="num">✓</span>Cart</div>
+  <div class="step-divider"></div>
+  <div class="step active"><span class="num">2</span>Details</div>
+  <div class="step-divider"></div>
+  <div class="step"><span class="num">3</span>Confirm</div>
+</div>
+
+<form th:action="@{/place-order}" method="post" enctype="multipart/form-data" id="checkoutForm">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+  <input type="hidden" id="appliedCoupon" name="couponCode" value="">
+  <input type="hidden" id="selectedPayment" name="paymentMethod" value="">
+
+  <div class="container">
+    <div class="form-card">
+
+      <!-- ── DELIVERY INFO ── -->
+      <div class="form-section">
+        <h3>Your Details</h3>
+        <div class="form-row">
+          <div class="fg">
+            <label>Full Name *</label>
+            <input type="text" name="customerName" th:value="${userFullname}" placeholder="Your full name" required>
+          </div>
+          <div class="fg">
+            <label>Phone Number *</label>
+            <input type="tel" name="phone" th:value="${userPhone}" placeholder="+91 9876543210" required>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Address / Notes for Delivery</label>
+          <textarea name="address" placeholder="Your address (for UPI delivery) or any special notes"></textarea>
+        </div>
+      </div>
+
+      <!-- ── PAYMENT METHOD ── -->
+      <div class="form-section">
+        <h3>How Would You Like to Pay?</h3>
+        <div class="pay-options">
+
+          <!-- PAY AT STORE -->
+          <div class="pay-option" id="opt-store" onclick="selectPayment('PAY_AT_STORE')">
+            <div class="pay-option-header">
+              <input type="radio" name="_payDisplay" id="radio-store">
+              <span class="pay-icon">🏪</span>
+              <div class="pay-info">
+                <div class="pay-label">Pay at Store</div>
+                <div class="pay-desc">Visit our Hyderabad store — show your booking code at counter</div>
+              </div>
+              <span class="pay-badge">✓ No payment now</span>
+            </div>
+            <!-- Booking code shown immediately -->
+            <div class="store-pickup-info" id="storeInfo">
+              <div class="booking-code-box">
+                <div class="code-label">Your Booking Code</div>
+                <div class="code" id="bookingCode">---</div>
+                <div style="font-size:12px;margin-top:8px;opacity:.8">Show this code at the store counter</div>
+              </div>
+              <div class="store-steps">
+                <div class="store-step"><span class="step-num">1</span>Note down your booking code above</div>
+                <div class="store-step"><span class="step-num">2</span>Visit Asra Optical Palace, Hyderabad</div>
+                <div class="store-step"><span class="step-num">3</span>Show this code — we'll have your order ready!</div>
+                <div class="store-step"><span class="step-num">4</span>Pay at the store (cash / UPI / card accepted)</div>
+              </div>
+              <p style="color:#888;font-size:12px;margin-top:12px">📞 Call us: +91-9876543210 to confirm availability</p>
+            </div>
+          </div>
+
+          <!-- UPI ONLINE -->
+          <div class="pay-option" id="opt-upi" onclick="selectPayment('UPI')">
+            <div class="pay-option-header">
+              <input type="radio" name="_payDisplay" id="radio-upi">
+              <span class="pay-icon">📱</span>
+              <div class="pay-info">
+                <div class="pay-label">Pay via UPI</div>
+                <div class="pay-desc">GPay, PhonePe, Paytm, any UPI app</div>
+              </div>
+              <span class="pay-badge" style="background:#e8f4fd;color:#004085">Online</span>
+            </div>
+            <div class="upi-section" id="upiInfo">
+              <p style="font-size:13px;color:var(--mid);margin-bottom:10px">Send payment to our UPI ID:</p>
+              <div class="upi-id-box">
+                <div>
+                  <div style="font-size:11px;color:#aaa;margin-bottom:4px;letter-spacing:1px">UPI ID</div>
+                  <div class="upi-id" id="upiIdDisplay">asraopticals@upi</div>
+                </div>
+                <button type="button" class="copy-btn" onclick="copyUPI()">📋 Copy</button>
+              </div>
+              <div style="background:#fff3cd;padding:10px 12px;border-radius:3px;font-size:12px;color:#856404;margin-top:8px">
+                ⚠️ After payment, enter your UPI transaction ID below so we can verify your order.
+              </div>
+              <div class="fg" style="margin-top:12px">
+                <label>UPI Transaction ID / UTR Number *</label>
+                <input type="text" name="upiReference" id="upiRefInput" placeholder="e.g. 4123456789012345">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── PRESCRIPTION ── -->
+      <div class="form-section">
+        <h3>Eye Prescription <span style="font-size:13px;color:#aaa;font-weight:400">(Optional)</span></h3>
+        <p style="font-size:13px;color:var(--mid);margin-bottom:12px">Upload your prescription for accurate lens preparation.</p>
+        <div class="upload-zone" onclick="document.getElementById('rxFile').click()">
+          📄 Upload prescription (PDF, JPG, PNG — max 5MB)
+        </div>
+        <input type="file" id="rxFile" name="prescription" accept=".pdf,.jpg,.jpeg,.png" style="display:none"
+               onchange="this.previousElementSibling.textContent = '✅ ' + this.files[0].name">
+      </div>
+
+      <!-- ── COUPON ── -->
+      <div class="form-section">
+        <h3>Discount Coupon</h3>
+        <div class="coupon-row">
+          <input type="text" id="couponInput" placeholder="Enter coupon code e.g. ASRA10" style="text-transform:uppercase">
+          <button type="button" class="coupon-btn" onclick="applyCoupon()">Apply</button>
+        </div>
+        <div id="couponMsg" class="coupon-msg"></div>
+      </div>
+
+    </div>
+
+    <!-- ── ORDER SUMMARY ── -->
+    <div class="summary">
+      <h3>Your Order</h3>
+      <div th:each="product : ${products}" class="order-item">
+        <img th:src="@{'/uploads/' + ${product.imageName}}" th:alt="${product.name}"
+     onerror="this.style.display='none'">
+        <div>
+          <div class="name" th:text="${product.name}"></div>
+          <div class="qty">Qty: <span th:text="${cart[product.id]}"></span></div>
+        </div>
+        <div class="price">₹ <span th:text="${#numbers.formatDecimal(cart[product.id] * product.price, 0, 2)}"></span></div>
+      </div>
+      <div class="summary-row"><span>Subtotal</span><span>₹ <span id="subtotalDisp" th:text="${subtotal}"></span></span></div>
+      <div class="summary-row discount" id="discountRow" style="display:none">
+        <span id="discountLabel">Discount</span>
+        <span>-₹ <span id="discountAmt">0</span></span>
+      </div>
+      <div class="summary-row"><span>Delivery</span><span style="color:green">FREE</span></div>
+      <div class="summary-row total"><span>Total</span><span>₹ <span id="totalDisp" th:text="${total}"></span></span></div>
+
+      <button type="submit" class="place-btn" id="placeBtn" disabled>
+        Select Payment Method First
+      </button>
+      <div class="secure-note" id="secureNote">🔒 Choose a payment method above</div>
+    </div>
+  </div>
+</form>
+
+<script>
+const subtotal = parseFloat(document.getElementById('subtotalDisp').textContent.replace(',',''));
+let bookingCode = 'ASRA' + Math.random().toString(36).substring(2,7).toUpperCase();
+
+// Pre-generate booking code
+document.getElementById('bookingCode').textContent = bookingCode;
+
+function selectPayment(type) {
+  // Update hidden input
+  document.getElementById('selectedPayment').value = type;
+
+  // Visual selection
+  document.querySelectorAll('.pay-option').forEach(o => o.classList.remove('selected'));
+  document.getElementById(type === 'PAY_AT_STORE' ? 'opt-store' : 'opt-upi').classList.add('selected');
+
+  // Show/hide sections
+  document.getElementById('storeInfo').classList.toggle('show', type === 'PAY_AT_STORE');
+  document.getElementById('upiInfo').classList.toggle('show', type === 'UPI');
+
+  // Radio
+  document.getElementById('radio-store').checked = type === 'PAY_AT_STORE';
+  document.getElementById('radio-upi').checked = type === 'UPI';
+
+  // Update button
+  const btn = document.getElementById('placeBtn');
+  const note = document.getElementById('secureNote');
+
+  if (type === 'PAY_AT_STORE') {
+    btn.disabled = false;
+    btn.textContent = '🏪 Confirm Store Pickup →';
+    note.textContent = '✅ No payment needed now — pay at the store';
+  } else if (type === 'UPI') {
+    btn.disabled = false;
+    btn.textContent = '📱 Place Order & Pay via UPI →';
+    note.textContent = '🔒 Enter your UPI transaction ID after payment';
+  }
+}
+
+function copyUPI() {
+  const upiId = document.getElementById('upiIdDisplay').textContent;
+  navigator.clipboard.writeText(upiId).then(() => {
+    document.querySelector('.copy-btn').textContent = '✅ Copied!';
+    setTimeout(() => document.querySelector('.copy-btn').textContent = '📋 Copy', 2000);
+  });
+}
+
+// Validate UPI ref before submit
+document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+  const payment = document.getElementById('selectedPayment').value;
+  if (!payment) {
+    e.preventDefault();
+    alert('Please select a payment method.');
+    return;
+  }
+  if (payment === 'UPI') {
+    const ref = document.getElementById('upiRefInput').value.trim();
+    if (!ref) {
+      e.preventDefault();
+      alert('Please enter your UPI Transaction ID after making the payment.');
+      document.getElementById('upiRefInput').focus();
+      return;
+    }
+  }
+});
+
+async function applyCoupon() {
+  const code = document.getElementById('couponInput').value.trim();
+  if (!code) return;
+  const res = await fetch('/coupon/validate', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: 'code=' + encodeURIComponent(code) + '&total=' + subtotal
+  });
+  const data = await res.json();
+  const msgEl = document.getElementById('couponMsg');
+  msgEl.textContent = data.message;
+  msgEl.className = 'coupon-msg ' + (data.valid ? 'coupon-ok' : 'coupon-err');
+  if (data.valid) {
+    document.getElementById('appliedCoupon').value = code;
+    document.getElementById('discountAmt').textContent = data.discount.toFixed(2);
+    document.getElementById('discountLabel').textContent = 'Discount (' + code.toUpperCase() + ')';
+    document.getElementById('discountRow').style.display = 'flex';
+    document.getElementById('totalDisp').textContent = data.newTotal.toFixed(2);
+  }
+}
+</script>
+</body>
+</html>
