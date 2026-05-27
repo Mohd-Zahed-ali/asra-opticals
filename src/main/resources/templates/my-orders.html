@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Orders — Asra Optical Palace</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#c9a96e;--dark:#1a1a1a;--cream:#f9f6f0;--border:#e0d5c5;--mid:#4a4a4a}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);min-height:100vh}
+.topbar{background:var(--dark);height:65px;padding:0 50px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:20px;letter-spacing:2px;text-decoration:none}
+.topbar a{color:#aaa;text-decoration:none;font-size:13px}.topbar a:hover{color:var(--gold)}
+.page-header{background:white;padding:30px 60px;border-bottom:1px solid var(--border)}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400}
+.container{max-width:900px;margin:35px auto;padding:0 25px}
+.order-card{background:white;border:1px solid var(--border);border-radius:4px;margin-bottom:20px;overflow:hidden}
+.order-header{padding:18px 22px;background:var(--cream);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--border)}
+.order-id{font-weight:700;font-size:14px;letter-spacing:1px}
+.badge{display:inline-block;padding:3px 10px;border-radius:2px;font-size:11px;letter-spacing:1px;font-weight:600;text-transform:uppercase}
+.PENDING{background:#fff3cd;color:#856404}
+.CONFIRMED{background:#cce5ff;color:#004085}
+.SHIPPED{background:#d4edda;color:#155724}
+.COMPLETED{background:#d1ecf1;color:#0c5460}
+.CANCELLED{background:#f8d7da;color:#721c24}
+.READY_AT_STORE{background:#e2d9f3;color:#4a2c8a}
+.order-body{padding:20px 22px}
+.order-meta{display:flex;gap:30px;flex-wrap:wrap;margin-bottom:14px}
+.meta-item label{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;margin-bottom:3px}
+.meta-item span{font-size:14px;color:var(--dark)}
+.items-list{border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:10px}
+.item-row{display:flex;gap:14px;align-items:center}
+.item-row img{width:55px;height:45px;object-fit:cover;border-radius:3px}
+.item-name{font-size:13px;font-weight:500}
+.item-qty{font-size:12px;color:var(--mid)}
+.item-price{margin-left:auto;font-size:13px;font-weight:600}
+.empty{text-align:center;padding:80px 20px}
+.empty .icon{font-size:60px;margin-bottom:20px}
+.empty h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;margin-bottom:10px}
+.empty p{color:var(--mid);font-size:14px;margin-bottom:25px}
+.btn{display:inline-block;padding:12px 28px;background:var(--dark);color:var(--gold);text-decoration:none;font-size:13px;font-weight:600;letter-spacing:1px;border-radius:3px}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="/" class="logo">ASRA OPTICAL PALACE</a>
+  <div style="display:flex;gap:20px">
+    <a href="/">← Shop</a><a href="/profile">Profile</a>
+    <form action="/logout" method="post" style="margin:0;padding:0">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+          <button type="submit" style="background:none;border:none;cursor:pointer;color:#e74c3c;font-size:13px;padding:10px 18px;width:100%;text-align:left">🚪 Logout</button>
+        </form>
+  </div>
+</nav>
+<div class="page-header"><h1>My Orders</h1></div>
+<div class="container">
+  <div th:each="order : ${orders}" class="order-card">
+    <div class="order-header">
+      <span class="order-id" th:text="${order.orderNumber}"></span>
+      <span class="badge" th:classappend="${order.status}" th:text="${order.status}"></span>
+    </div>
+    <div class="order-body">
+      <div class="order-meta">
+        <div class="meta-item"><label>Total</label><span>₹ <span th:text="${order.totalAmount}"></span></span></div>
+        <div class="meta-item"><label>Payment</label><span th:text="${order.paymentMethod}"></span></div>
+        <div class="meta-item"><label>Address</label><span th:text="${order.address}"></span></div>
+      </div>
+      <div class="items-list">
+        <div class="item-row" th:each="item : ${order.items}">
+          <img th:src="@{'/uploads/' + ${item.product.imageName}}" th:alt="${item.product.name}">
+          <div>
+            <div class="item-name" th:text="${item.product.name}"></div>
+            <div class="item-qty">Qty: <span th:text="${item.quantity}"></span></div>
+          </div>
+          <div class="item-price">₹ <span th:text="${item.price * item.quantity}"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="empty" th:if="${#lists.isEmpty(orders)}">
+    <div class="icon">📦</div>
+    <h2>No orders yet</h2>
+    <p>You haven't placed any orders. Start shopping!</p>
+    <a href="/" class="btn">Browse Collection →</a>
+  </div>
+</div>
+</body>
+</html>

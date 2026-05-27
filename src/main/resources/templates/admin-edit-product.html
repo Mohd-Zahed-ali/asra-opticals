@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edit Product — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#c9a96e;--dark:#1a1a1a;--cream:#f9f6f0;--border:#e0d5c5;--mid:#4a4a4a;--sb:240px}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);display:flex;min-height:100vh}
+.sb{width:var(--sb);background:var(--dark);position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.sb-logo{padding:24px 20px;border-bottom:1px solid #2d2d2d;text-align:center}
+.sb-brand{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);letter-spacing:1.5px}
+.sb-role{font-size:10px;color:#555;letter-spacing:2px;margin-top:3px}
+.sb-nav{flex:1;padding:18px 0}
+.sb-sec{padding:10px 20px 4px;font-size:10px;letter-spacing:2px;color:#444;text-transform:uppercase}
+.sb-link{display:flex;align-items:center;gap:11px;padding:11px 20px;color:#888;text-decoration:none;font-size:13px;transition:all .2s;border-left:3px solid transparent}
+.sb-link:hover{color:white;background:#242424}
+.sb-link.active{color:var(--gold);background:#1e1e1e;border-left-color:var(--gold)}
+.sb-foot{padding:18px 20px;border-top:1px solid #2d2d2d}
+.sb-foot a{display:block;color:#666;text-decoration:none;font-size:13px;padding:6px 0;transition:color .2s}
+.sb-foot a:hover{color:var(--gold)}
+.main{margin-left:var(--sb);flex:1}
+.topbar{background:white;padding:0 35px;height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.topbar h1{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400}
+.content{padding:28px 35px;max-width:900px}
+.card{background:white;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:22px}
+.card-hd{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.card-hd h2{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400}
+.card-body{padding:24px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg.full{grid-column:1/-1}
+label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--mid);font-weight:500}
+input[type=text],input[type=number],select,textarea{
+  padding:11px 13px;border:1px solid var(--border);border-radius:3px;
+  font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s;
+  background:#fdfbf8;color:var(--dark);width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:90px}
+.current-img{margin-bottom:14px}
+.current-img img{width:120px;height:100px;object-fit:cover;border-radius:4px;border:2px solid var(--border)}
+.current-img p{font-size:12px;color:var(--mid);margin-top:6px}
+.upload-area{border:2px dashed var(--border);border-radius:4px;padding:25px 20px;
+  text-align:center;cursor:pointer;transition:all .2s;background:#fdfbf8;font-size:13px;color:var(--mid)}
+.upload-area:hover{border-color:var(--gold)}
+.form-actions{display:flex;gap:12px;margin-top:6px}
+.btn-save{padding:13px 30px;background:var(--dark);color:var(--gold);border:none;
+  cursor:pointer;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;border-radius:3px}
+.btn-cancel{padding:13px 22px;background:transparent;color:var(--mid);
+  border:1px solid var(--border);border-radius:3px;cursor:pointer;font-size:13px;text-decoration:none;display:flex;align-items:center}
+.alert-success{background:#f0fff4;color:#155724;border-left:3px solid #27ae60;padding:12px 16px;border-radius:3px;font-size:13px;margin-bottom:18px}
+</style>
+</head>
+<body>
+<aside class="sb">
+  <div class="sb-logo"><div class="sb-brand">ASRA OPTICAL</div><div class="sb-role">ADMIN PANEL</div></div>
+  <nav class="sb-nav">
+    <div class="sb-sec">Main</div>
+    <a href="/admin/dashboard" class="sb-link">📊 Dashboard</a>
+    <div class="sb-sec">Products</div>
+    <a href="/admin/add-product" class="sb-link">➕ Add Product</a>
+    <a href="/admin/products" class="sb-link active">📦 All Products</a>
+    <div class="sb-sec">Operations</div>
+    <a href="/admin/orders" class="sb-link">🛒 Orders</a>
+    <a href="/admin/appointments" class="sb-link">📅 Appointments</a>
+    <div class="sb-sec">Account</div>
+    <a href="/profile" class="sb-link">👤 Profile & Password</a>
+  </nav>
+  <div class="sb-foot">
+    <a href="/" target="_blank">🌐 View Store</a>
+    <form action="/logout" method="post" style="margin:0;padding:0">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+          <button type="submit" style="background:none;border:none;cursor:pointer;color:#e74c3c;font-size:13px;padding:10px 18px;width:100%;text-align:left">🚪 Logout</button>
+        </form>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <h1>Edit Product</h1>
+    <a href="/admin/products" style="font-size:13px;color:var(--gold);text-decoration:none">← Back to Products</a>
+  </div>
+  <div class="content">
+    <div class="alert-success" th:if="${success}" th:text="${success}"></div>
+
+    <form th:action="@{/admin/update-product}" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="id" th:value="${product.id}">
+      <input type="hidden" name="active" th:value="${product.active}">
+
+      <div class="card">
+        <div class="card-hd"><span>📝</span><h2>Product Information</h2></div>
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="fg">
+              <label>Product Name *</label>
+              <input type="text" name="name" th:value="${product.name}" required>
+            </div>
+            <div class="fg">
+              <label>Brand</label>
+              <input type="text" name="brand" th:value="${product.brand}">
+            </div>
+            <div class="fg">
+              <label>Category</label>
+              <select name="category">
+                <option value="Glasses" th:selected="${product.category=='Glasses'}">👓 Glasses</option>
+                <option value="Sunglasses" th:selected="${product.category=='Sunglasses'}">🕶️ Sunglasses</option>
+                <option value="Contact Lenses" th:selected="${product.category=='Contact Lenses'}">💊 Contact Lenses</option>
+                <option value="Electronics" th:selected="${product.category=='Electronics'}">📱 Electronics</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Price (₹) *</label>
+              <input type="number" name="price" th:value="${product.price}" step="0.01" min="0" required>
+            </div>
+            <div class="fg">
+              <label>Gender</label>
+              <select name="gender">
+                <option value="Men" th:selected="${product.gender=='Men'}">Men</option>
+                <option value="Women" th:selected="${product.gender=='Women'}">Women</option>
+                <option value="Kids" th:selected="${product.gender=='Kids'}">Kids</option>
+                <option value="Unisex" th:selected="${product.gender=='Unisex'}">Unisex</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Frame Shape</label>
+              <select name="shape">
+                <option value="Square" th:selected="${product.shape=='Square'}">Square</option>
+                <option value="Rectangle" th:selected="${product.shape=='Rectangle'}">Rectangle</option>
+                <option value="Round" th:selected="${product.shape=='Round'}">Round</option>
+                <option value="Aviator" th:selected="${product.shape=='Aviator'}">Aviator</option>
+                <option value="Cat-Eye" th:selected="${product.shape=='Cat-Eye'}">Cat-Eye</option>
+                <option value="Oval" th:selected="${product.shape=='Oval'}">Oval</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Stock Quantity *</label>
+              <input type="number" name="stock" th:value="${product.stock}" min="0" required>
+            </div>
+            <div class="fg full">
+              <label>Description</label>
+              <textarea name="description" th:text="${product.description}"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><span>🖼️</span><h2>Product Image</h2></div>
+        <div class="card-body">
+          <div class="current-img" th:if="${product.imageName}">
+            <img th:src="@{'/uploads/' + ${product.imageName}}" alt="Current image">
+            <p>Current image — upload a new one below to replace it</p>
+          </div>
+          <div class="upload-area" onclick="document.getElementById('imgFile').click()">
+            📸 Click to upload a new image (optional — keeps existing if left empty)
+          </div>
+          <input type="file" id="imgFile" name="imageFile" accept="image/*" style="display:none"
+                 onchange="this.previousElementSibling.textContent='✅ ' + this.files[0].name">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-save">💾 Save Changes</button>
+        <a href="/admin/products" class="btn-cancel">Cancel</a>
+      </div>
+    </form>
+  </div>
+</main>
+</body>
+</html>
