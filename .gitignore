@@ -20,7 +20,6 @@ target/
 *.ipr
 
 # Hide sensitive files
-application-prod.properties
 *.env
 
 # Hide H2 database files
