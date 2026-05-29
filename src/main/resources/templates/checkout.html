@@ -38,9 +38,9 @@ textarea{resize:vertical;min-height:70px}
 .pay-icon{font-size:24px}
 .pay-info .pay-label{font-weight:600;font-size:15px;color:var(--dark)}
 .pay-info .pay-desc{font-size:12px;color:var(--mid);margin-top:3px}
-.pay-badge{margin-left:auto;background:#f0fff4;color:#155724;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
+.pay-badge{margin-left:auto;background:#f0fff4;color:#155724;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap}
 
-/* ── PAY AT STORE SECTION ── */
+/* ── PAY AT STORE ── */
 .store-pickup-info{background:var(--dark);border-radius:0 0 4px 4px;padding:20px 18px;display:none}
 .store-pickup-info.show{display:block}
 .booking-code-box{background:var(--gold);color:var(--dark);text-align:center;padding:20px;border-radius:6px;margin:12px 0}
@@ -51,11 +51,34 @@ textarea{resize:vertical;min-height:70px}
 .store-step .step-num{background:var(--gold);color:var(--dark);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px}
 
 /* ── UPI SECTION ── */
-.upi-section{background:#f9f6f0;border-radius:0 0 4px 4px;padding:18px;display:none;border-top:1px solid var(--border)}
+.upi-section{background:#f9f6f0;border-radius:0 0 4px 4px;padding:20px;display:none;border-top:1px solid var(--border)}
 .upi-section.show{display:block}
-.upi-id-box{background:white;border:2px solid var(--gold);border-radius:4px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin:10px 0}
-.upi-id{font-size:18px;font-weight:700;color:var(--dark);letter-spacing:1px}
-.copy-btn{background:var(--dark);color:var(--gold);border:none;padding:7px 14px;border-radius:3px;cursor:pointer;font-size:12px;font-weight:600}
+
+/* UPI Steps */
+.upi-steps{display:flex;flex-direction:column;gap:16px;margin-bottom:16px}
+.upi-step-card{background:white;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.upi-step-header{background:var(--dark);color:var(--gold);padding:10px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.upi-step-body{padding:14px 16px}
+.upi-id-box{background:#fdfbf8;border:2px solid var(--gold);border-radius:4px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin:10px 0}
+.upi-id{font-size:16px;font-weight:700;color:var(--dark);letter-spacing:.5px}
+.upi-amount{font-size:13px;color:var(--mid);margin-bottom:6px}
+.copy-btn{background:var(--dark);color:var(--gold);border:none;padding:7px 14px;border-radius:3px;cursor:pointer;font-size:12px;font-weight:600;white-space:nowrap}
+.pay-now-btn{width:100%;padding:13px;border:none;border-radius:4px;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px}
+.pay-store-btn{background:linear-gradient(135deg,#5f2eea,#a855f7);color:white}
+.pay-store-btn:hover{opacity:.9}
+.pay-platform-btn{background:linear-gradient(135deg,#f97316,#ea580c);color:white}
+.pay-platform-btn:hover{opacity:.9}
+.platform-note{background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:10px 14px;font-size:12px;color:#856404;margin-top:10px}
+.step-divider-line{display:flex;align-items:center;gap:10px;margin:4px 0}
+.step-divider-line::before,.step-divider-line::after{content:'';flex:1;height:1px;background:var(--border)}
+.step-divider-line span{font-size:11px;color:#bbb;white-space:nowrap}
+
+/* Verification inputs */
+.verify-section{background:white;border:1px solid var(--border);border-radius:6px;padding:16px;margin-top:14px}
+.verify-section h4{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.check-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:10px;background:#f9f6f0;border-radius:4px}
+.check-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--dark);flex-shrink:0}
+.check-row label{font-size:13px;color:var(--mid);margin:0;text-transform:none;letter-spacing:0;font-weight:400}
 
 /* ── COUPON ── */
 .coupon-row{display:flex;gap:8px}
@@ -79,6 +102,7 @@ textarea{resize:vertical;min-height:70px}
 .order-item .price{margin-left:auto;font-size:13px;font-weight:600;white-space:nowrap}
 .summary-row{display:flex;justify-content:space-between;font-size:13px;color:var(--mid);margin-bottom:8px}
 .summary-row.discount{color:green}
+.summary-row.platform{color:#f97316;font-weight:500}
 .summary-row.total{font-size:18px;font-weight:600;color:var(--dark);padding-top:12px;border-top:1px solid var(--border);margin-top:6px}
 .place-btn{width:100%;padding:15px;background:var(--dark);color:var(--gold);border:none;cursor:pointer;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border-radius:3px;margin-top:16px;transition:.2s}
 .place-btn:hover{background:#2d2d2d}
@@ -105,6 +129,7 @@ textarea{resize:vertical;min-height:70px}
   <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
   <input type="hidden" id="appliedCoupon" name="couponCode" value="">
   <input type="hidden" id="selectedPayment" name="paymentMethod" value="">
+  <input type="hidden" id="platformFeeInput" name="platformFee" value="15">
 
   <div class="container">
     <div class="form-card">
@@ -124,7 +149,7 @@ textarea{resize:vertical;min-height:70px}
         </div>
         <div class="fg">
           <label>Address / Notes for Delivery</label>
-          <textarea name="address" placeholder="Your address (for UPI delivery) or any special notes"></textarea>
+          <textarea name="address" placeholder="Your address or any special notes"></textarea>
         </div>
       </div>
 
@@ -144,7 +169,6 @@ textarea{resize:vertical;min-height:70px}
               </div>
               <span class="pay-badge">✓ No payment now</span>
             </div>
-            <!-- Booking code shown immediately -->
             <div class="store-pickup-info" id="storeInfo">
               <div class="booking-code-box">
                 <div class="code-label">Your Booking Code</div>
@@ -168,25 +192,96 @@ textarea{resize:vertical;min-height:70px}
               <span class="pay-icon">📱</span>
               <div class="pay-info">
                 <div class="pay-label">Pay via UPI</div>
-                <div class="pay-desc">GPay, PhonePe, Paytm, any UPI app</div>
+                <div class="pay-desc">GPay, PhonePe, Paytm — instant payment</div>
               </div>
               <span class="pay-badge" style="background:#e8f4fd;color:#004085">Online</span>
             </div>
+
             <div class="upi-section" id="upiInfo">
-              <p style="font-size:13px;color:var(--mid);margin-bottom:10px">Send payment to our UPI ID:</p>
-              <div class="upi-id-box">
-                <div>
-                  <div style="font-size:11px;color:#aaa;margin-bottom:4px;letter-spacing:1px">UPI ID</div>
-                  <div class="upi-id" id="upiIdDisplay">asraopticals@upi</div>
+              <p style="font-size:13px;color:var(--mid);margin-bottom:14px">
+                Complete <strong>2 quick UPI payments</strong> to confirm your order:
+              </p>
+
+              <div class="upi-steps">
+
+                <!-- STEP 1 — Store Payment -->
+                <div class="upi-step-card">
+                  <div class="upi-step-header">
+                    <span>Step 1 of 2</span> — Pay Order Amount to Store
+                  </div>
+                  <div class="upi-step-body">
+                    <div class="upi-amount">
+                      Order amount: <strong>₹ <span id="orderAmountDisplay">0</span></strong>
+                    </div>
+                    <div class="upi-id-box">
+                      <div>
+                        <div style="font-size:10px;color:#aaa;margin-bottom:3px;letter-spacing:1px">STORE UPI ID</div>
+                        <div class="upi-id">asraopticals@upi</div>
+                      </div>
+                      <button type="button" class="copy-btn" onclick="copyText('asraopticals@upi', this)">📋 Copy</button>
+                    </div>
+                    <button type="button" class="pay-now-btn pay-store-btn" onclick="payStoreUPI()">
+                      📱 Open UPI App — Pay Order Amount
+                    </button>
+                    <div style="font-size:11px;color:#aaa;text-align:center;margin-top:6px">
+                      Opens PhonePe / GPay / Paytm with amount pre-filled
+                    </div>
+                    <div class="fg" style="margin-top:12px">
+                      <label>Store Payment — UPI Transaction ID *</label>
+                      <input type="text" name="upiReference" id="upiRefStore"
+                             placeholder="e.g. 412345678901 (12-digit UTR)">
+                    </div>
+                    <div class="check-row" style="margin-top:8px">
+                      <input type="checkbox" id="storePayDone" onchange="checkBothPaid()">
+                      <label for="storePayDone">✅ I have paid the order amount to <strong>asraopticals@upi</strong></label>
+                    </div>
+                  </div>
                 </div>
-                <button type="button" class="copy-btn" onclick="copyUPI()">📋 Copy</button>
+
+                <div class="step-divider-line">
+                  <span>then complete step 2</span>
+                </div>
+
+                <!-- STEP 2 — Platform Fee -->
+                <div class="upi-step-card">
+                  <div class="upi-step-header" style="background:#f97316">
+                    <span>Step 2 of 2</span> — Pay Platform Convenience Fee
+                  </div>
+                  <div class="upi-step-body">
+                    <div class="upi-amount">
+                      Platform fee: <strong style="color:#f97316">₹15</strong>
+                      <span style="font-size:11px;color:#aaa;margin-left:6px">(one-time convenience charge)</span>
+                    </div>
+                    <div class="upi-id-box">
+                      <div>
+                        <div style="font-size:10px;color:#aaa;margin-bottom:3px;letter-spacing:1px">PLATFORM UPI ID</div>
+                        <div class="upi-id">572640098@icici</div>
+                      </div>
+                      <button type="button" class="copy-btn" onclick="copyText('572640098@icici', this)">📋 Copy</button>
+                    </div>
+                    <button type="button" class="pay-now-btn pay-platform-btn" onclick="payPlatformUPI()">
+                      📱 Open UPI App — Pay ₹15 Platform Fee
+                    </button>
+                    <div style="font-size:11px;color:#aaa;text-align:center;margin-top:6px">
+                      Opens PhonePe / GPay / Paytm with ₹15 pre-filled
+                    </div>
+                    <div class="fg" style="margin-top:12px">
+                      <label>Platform Fee — UPI Transaction ID *</label>
+                      <input type="text" name="upiReferencePlatform" id="upiRefPlatform"
+                             placeholder="e.g. 412345678902 (12-digit UTR)">
+                    </div>
+                    <div class="check-row" style="margin-top:8px">
+                      <input type="checkbox" id="platformPayDone" onchange="checkBothPaid()">
+                      <label for="platformPayDone">✅ I have paid ₹15 to <strong>572640098@icici</strong></label>
+                    </div>
+                  </div>
+                </div>
+
               </div>
-              <div style="background:#fff3cd;padding:10px 12px;border-radius:3px;font-size:12px;color:#856404;margin-top:8px">
-                ⚠️ After payment, enter your UPI transaction ID below so we can verify your order.
-              </div>
-              <div class="fg" style="margin-top:12px">
-                <label>UPI Transaction ID / UTR Number *</label>
-                <input type="text" name="upiReference" id="upiRefInput" placeholder="e.g. 4123456789012345">
+
+              <div class="platform-note">
+                ⚠️ Your order will be confirmed only after <strong>both payments</strong> are verified.
+                Please enter both transaction IDs above.
               </div>
             </div>
           </div>
@@ -222,7 +317,7 @@ textarea{resize:vertical;min-height:70px}
       <h3>Your Order</h3>
       <div th:each="product : ${products}" class="order-item">
         <img th:src="@{'/uploads/' + ${product.imageName}}" th:alt="${product.name}"
-     onerror="this.style.display='none'">
+             onerror="this.style.display='none'">
         <div>
           <div class="name" th:text="${product.name}"></div>
           <div class="qty">Qty: <span th:text="${cart[product.id]}"></span></div>
@@ -235,7 +330,13 @@ textarea{resize:vertical;min-height:70px}
         <span>-₹ <span id="discountAmt">0</span></span>
       </div>
       <div class="summary-row"><span>Delivery</span><span style="color:green">FREE</span></div>
-      <div class="summary-row total"><span>Total</span><span>₹ <span id="totalDisp" th:text="${total}"></span></span></div>
+      <div class="summary-row platform" id="platformFeeRow" style="display:none">
+        <span>Platform Fee</span><span>₹ 15</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total</span>
+        <span>₹ <span id="totalDisp" th:text="${total}"></span></span>
+      </div>
 
       <button type="submit" class="place-btn" id="placeBtn" disabled>
         Select Payment Method First
@@ -246,52 +347,101 @@ textarea{resize:vertical;min-height:70px}
 </form>
 
 <script>
-const subtotal = parseFloat(document.getElementById('subtotalDisp').textContent.replace(',',''));
+const STORE_UPI = 'asraopticals@upi';
+const PLATFORM_UPI = '572640098@icici';
+const PLATFORM_FEE = 15;
+const subtotal = parseFloat(document.getElementById('subtotalDisp').textContent.replace(/,/g,''));
+let currentTotal = subtotal;
 let bookingCode = 'ASRA' + Math.random().toString(36).substring(2,7).toUpperCase();
-
-// Pre-generate booking code
 document.getElementById('bookingCode').textContent = bookingCode;
 
 function selectPayment(type) {
-  // Update hidden input
   document.getElementById('selectedPayment').value = type;
-
-  // Visual selection
   document.querySelectorAll('.pay-option').forEach(o => o.classList.remove('selected'));
   document.getElementById(type === 'PAY_AT_STORE' ? 'opt-store' : 'opt-upi').classList.add('selected');
-
-  // Show/hide sections
   document.getElementById('storeInfo').classList.toggle('show', type === 'PAY_AT_STORE');
   document.getElementById('upiInfo').classList.toggle('show', type === 'UPI');
-
-  // Radio
   document.getElementById('radio-store').checked = type === 'PAY_AT_STORE';
   document.getElementById('radio-upi').checked = type === 'UPI';
 
-  // Update button
   const btn = document.getElementById('placeBtn');
   const note = document.getElementById('secureNote');
+  const platformRow = document.getElementById('platformFeeRow');
 
   if (type === 'PAY_AT_STORE') {
+    platformRow.style.display = 'none';
+    document.getElementById('totalDisp').textContent = currentTotal.toFixed(2);
     btn.disabled = false;
     btn.textContent = '🏪 Confirm Store Pickup →';
     note.textContent = '✅ No payment needed now — pay at the store';
   } else if (type === 'UPI') {
-    btn.disabled = false;
-    btn.textContent = '📱 Place Order & Pay via UPI →';
-    note.textContent = '🔒 Enter your UPI transaction ID after payment';
+    platformRow.style.display = 'flex';
+    document.getElementById('totalDisp').textContent = (currentTotal + PLATFORM_FEE).toFixed(2);
+    document.getElementById('orderAmountDisplay').textContent = currentTotal.toFixed(2);
+    btn.disabled = true;
+    btn.textContent = 'Complete Both Payments Above First';
+    note.textContent = '⚠️ Pay both UPIs and check both boxes to enable';
   }
 }
 
-function copyUPI() {
-  const upiId = document.getElementById('upiIdDisplay').textContent;
-  navigator.clipboard.writeText(upiId).then(() => {
-    document.querySelector('.copy-btn').textContent = '✅ Copied!';
-    setTimeout(() => document.querySelector('.copy-btn').textContent = '📋 Copy', 2000);
+// Open UPI deep link for store payment
+function payStoreUPI() {
+  const amount = currentTotal.toFixed(2);
+  const upiLink = `upi://pay?pa=${STORE_UPI}&pn=Asra+Optical+Palace&am=${amount}&cu=INR&tn=Order+Payment`;
+  window.location.href = upiLink;
+  setTimeout(() => {
+    // Fallback if UPI app doesn't open
+    alert('If UPI app did not open, manually send ₹' + amount + ' to ' + STORE_UPI);
+  }, 2000);
+}
+
+// Open UPI deep link for platform fee
+function payPlatformUPI() {
+  const upiLink = `upi://pay?pa=${PLATFORM_UPI}&pn=Asra+Platform+Fee&am=15.00&cu=INR&tn=Platform+Convenience+Fee`;
+  window.location.href = upiLink;
+  setTimeout(() => {
+    alert('If UPI app did not open, manually send ₹15 to ' + PLATFORM_UPI);
+  }, 2000);
+}
+
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  }).catch(() => {
+    // Fallback for older browsers
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    const orig = btn.textContent;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = orig, 2000);
   });
 }
 
-// Validate UPI ref before submit
+function checkBothPaid() {
+  const storeDone = document.getElementById('storePayDone').checked;
+  const platformDone = document.getElementById('platformPayDone').checked;
+  const btn = document.getElementById('placeBtn');
+  const note = document.getElementById('secureNote');
+  if (storeDone && platformDone) {
+    btn.disabled = false;
+    btn.textContent = '✅ Place Order →';
+    note.textContent = '🔒 Both payments confirmed — ready to place order!';
+    note.style.color = '#27ae60';
+  } else {
+    btn.disabled = true;
+    btn.textContent = 'Complete Both Payments Above First';
+    note.textContent = '⚠️ Pay both UPIs and check both boxes to enable';
+    note.style.color = '#bbb';
+  }
+}
+
+// Form validation before submit
 document.getElementById('checkoutForm').addEventListener('submit', function(e) {
   const payment = document.getElementById('selectedPayment').value;
   if (!payment) {
@@ -300,16 +450,30 @@ document.getElementById('checkoutForm').addEventListener('submit', function(e) {
     return;
   }
   if (payment === 'UPI') {
-    const ref = document.getElementById('upiRefInput').value.trim();
-    if (!ref) {
+    const storeRef = document.getElementById('upiRefStore').value.trim();
+    const platformRef = document.getElementById('upiRefPlatform').value.trim();
+    if (!storeRef) {
       e.preventDefault();
-      alert('Please enter your UPI Transaction ID after making the payment.');
-      document.getElementById('upiRefInput').focus();
+      alert('Please enter the Transaction ID for your store payment.');
+      document.getElementById('upiRefStore').focus();
+      return;
+    }
+    if (!platformRef) {
+      e.preventDefault();
+      alert('Please enter the Transaction ID for your ₹15 platform fee payment.');
+      document.getElementById('upiRefPlatform').focus();
+      return;
+    }
+    if (!document.getElementById('storePayDone').checked ||
+        !document.getElementById('platformPayDone').checked) {
+      e.preventDefault();
+      alert('Please confirm both payments by checking both checkboxes.');
       return;
     }
   }
 });
 
+// Coupon
 async function applyCoupon() {
   const code = document.getElementById('couponInput').value.trim();
   if (!code) return;
@@ -327,7 +491,12 @@ async function applyCoupon() {
     document.getElementById('discountAmt').textContent = data.discount.toFixed(2);
     document.getElementById('discountLabel').textContent = 'Discount (' + code.toUpperCase() + ')';
     document.getElementById('discountRow').style.display = 'flex';
-    document.getElementById('totalDisp').textContent = data.newTotal.toFixed(2);
+    currentTotal = data.newTotal;
+    const payType = document.getElementById('selectedPayment').value;
+    document.getElementById('totalDisp').textContent = payType === 'UPI'
+      ? (currentTotal + PLATFORM_FEE).toFixed(2)
+      : currentTotal.toFixed(2);
+    document.getElementById('orderAmountDisplay').textContent = currentTotal.toFixed(2);
   }
 }
 </script>
