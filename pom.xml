@@ -91,6 +91,12 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        
+        <dependency>
+    <groupId>com.sendinblue</groupId>
+    <artifactId>sib-api-v3-sdk</artifactId>
+    <version>7.0.0</version>
+</dependency>
 
         <!-- Dev Tools -->
         <dependency>
